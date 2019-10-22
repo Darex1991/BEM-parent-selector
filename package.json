@@ -1,0 +1,25 @@
+{
+  "name": "bem-parent-selector",
+  "version": "1.0.0",
+  "description": "Sass / Scss mixin for adding selectors into parent using & and without duplicating selectors before parent",
+  "main": "_parent_append.scss",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Darex1991/BEM-parent-selector.git"
+  },
+  "keywords": [
+    "BEM",
+    "parent-selector",
+    "scss",
+    "sass"
+  ],
+  "author": "Darex1991",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Darex1991/BEM-parent-selector/issues"
+  },
+  "homepage": "https://github.com/Darex1991/BEM-parent-selector#readme"
+}

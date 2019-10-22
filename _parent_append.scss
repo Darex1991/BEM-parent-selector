@@ -1,0 +1,79 @@
+@function str-split($string, $separator) {
+  $split-arr: ();
+  $index : str-index($string, $separator);
+
+  @while $index != null {
+    $item: str-slice($string, 1, $index - 1);
+    $split-arr: append($split-arr, $item);
+    $string: str-slice($string, $index + 1);
+    $index : str-index($string, $separator);
+  }
+
+  $split-arr: append($split-arr, $string);
+
+  @return $split-arr;
+}
+
+@function str-replace($string, $search, $replace: '') {
+  $index: str-index($string, $search);
+
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+  }
+
+  @return $string;
+}
+
+@function parent-selector ($appendix) {
+  $separator: ' ';
+  $startAt: 1;
+  $type: '';
+  $sibling: ();
+  $owner: ();
+  $parent: ();
+
+  $workStr: str-slice(#{&}, $startAt);
+  $split-values: str-split(#{&}, $separator);
+  $lengthValues: length($split-values);
+  $indexOfFirstSpace: str-index($workStr, $separator);
+
+  @each $current-selector in $split-values {
+    $index: index($split-values, $current-selector);
+
+    @if ($index == $lengthValues) {
+      $parent: $current-selector;
+    } @else {
+      $owner: append($owner, $current-selector)
+    }
+  }
+
+  $ampersandExists: str-index($appendix, '&');
+
+  @if ($ampersandExists) {
+    $replaceAmpersand: str-replace($appendix, '&', $parent);
+    @return #{$owner $replaceAmpersand};
+  }
+
+  @return #{$owner $parent $appendix};
+
+}
+
+@mixin BEM-parent-selector ($appendix...) {
+  $list: ();
+
+  @each $key in $appendix {
+    $index: index($appendix, $key);
+    $length: length($appendix);
+    $separator: ', ';
+
+    @if ($index == $length) {
+      $separator: '';
+    }
+
+    $list: append($list, '#{parent-selector($key)+$separator}');
+  }
+
+  @at-root #{$list} {
+    @content;
+  }
+}
